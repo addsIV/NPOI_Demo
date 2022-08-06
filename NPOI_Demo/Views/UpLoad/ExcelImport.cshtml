@@ -1,0 +1,13 @@
+﻿<!--點選上傳檔案按鈕後POST到後端的Uploads的Action-->
+@using (Html.BeginForm("Uploads", "UpLoadController", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<div class="uploads">
+		<input type="file" id="upload_file" name="file" />
+		<button type="submit" id="upload_button" class="btn btn-primary">上傳檔案</button>
+	</div>
+}
+
+<div class="remote_file_path">
+	<label class="remote_file_path_label ">Remote File Path:</label>
+	<span class="form-control" id="remote_file_path">@ViewBag.path</span>
+</div>
