@@ -1,5 +1,5 @@
 ﻿<!--點選上傳檔案按鈕後POST到後端的Uploads的Action-->
-@using (Html.BeginForm("Uploads", "UpLoadController", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Uploads", "UpLoad", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 	<div class="uploads">
 		<input type="file" id="upload_file" name="file" />
@@ -10,4 +10,13 @@
 <div class="remote_file_path">
 	<label class="remote_file_path_label ">Remote File Path:</label>
 	<span class="form-control" id="remote_file_path">@ViewBag.path</span>
+</div>
+
+<div>
+	<label class="remote_file_path_label ">value in the first cell</label>
+	<span class="form-control" id="remote_file_path">@ViewBag.First_Cell_Value</span>
+	<br />
+	<label class="remote_file_path_label ">value in the first cell</label>
+	<span class="form-control" id="remote_file_path">@ViewBag.Second_Cell_Formula</span>
+	<span class="form-control" id="remote_file_path">@ViewBag.Second_Cell_Nermeric</span>
 </div>
