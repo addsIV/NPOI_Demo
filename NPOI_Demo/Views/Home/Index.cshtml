@@ -1,40 +1,57 @@
-﻿@{
-	ViewBag.Title = "Home Page";
+﻿@using NPOI.Util
+@{
+    ViewBag.Title = "NPOI Demo";
 }
 
 <div class="jumbotron">
-	<h1>NPOI</h1>
-	<p class="lead">NPOI is a .NET version of POI, which provides libraries for reading and writing files in Microsoft Office formats, such as Word, PowerPoint and Excel.</p>
-	<p><a href="https://github.com/dotnetcore/NPOI" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>NPOI</h1>
+    <p class="lead">NPOI is a .NET version of POI, which provides libraries for reading and writing Microsoft Excel files</p>
+    <p>
+        <a href="https://github.com/dotnetcore/NPOI" class="btn btn-primary btn-lg">Learn more &raquo;</a>
+    </p>
 </div>
 
 <div class="row">
-	<div class="col-md-4">
-		<h2>Getting started</h2>
-		<p>
-			try to upload a excel file
-		</p>
-		<div>
-			<!--點選上傳檔案按鈕後POST到後端的Uploads的Action-->
-			@using (Html.BeginForm("Uploads", "UpLoad", FormMethod.Post, new { enctype = "multipart/form-data" }))
-			{
-				<div class="uploads btn btn-primary btn-lg">
-					<input type="file" id="upload_file" name="file" class="" /><br />
-					<button type="submit" id="upload_button" class="btn btn-primary">上傳檔案</button>
-				</div>
-			}
+    <div class="col-md-4">
+        <h2>Upload File</h2>
+        <p>
+            try to upload a excel file
+        </p>
+        <div>
+            <!--點選上傳檔案按鈕後POST到後端的Uploads的Action-->
+            @using (Html.BeginForm("Uploads", "UpLoad", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="uploads btn btn-primary btn-lg">
+                    <input type="file" id="upload_file" name="file" class=""/><br/>
+                    <button type="submit" id="upload_button" class="btn btn-primary">上傳檔案</button>
+                </div>
+            }
 
-			<div class="remote_file_path">
-				<label class="remote_file_path_label ">Remote File Path:</label>
-				<span class="form-control" id="remote_file_path">@ViewBag.path</span>
-			</div>
-		</div>
-	</div>
+            @* <div class="remote_file_path"> *@
+            @* 	<label class="remote_file_path_label ">Remote File Path:</label> *@
+            @* 	<span class="form-control" id="remote_file_path">@ViewBag.path</span> *@
+            @* </div> *@
+        </div>
+    </div>
 
-	<div class="col-md-4">
-		<h2>Web Hosting</h2>
-		<p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-		<p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-	</div>
+    <div class="col-md-4">
+        <h2>Creat File</h2>
+        <p>Make a excel file with values </p>
+        @using (Html.BeginForm("Exports","Export", FormMethod.Post))
+        {
+            <div>
+                @Html.Label("value in the first cell:", "First_Cell_Value")
+                @Html.TextBox("First_Cell_Value", 0)
+            </div>
+            <div>
+                @Html.Label("value in the second cell:", "Second_Cell_Value")
+                @Html.TextBox("Second_Cell_Value", 0)
+            </div>
+            <div>
+                 @Html.Label("formula in the third cell:", "Third_Cell_Formula")
+                 @Html.TextBox("Third_Cell_Formula")
+            </div>
+            <input class="btn btn-primary" type="submit"/>
+        }
+    </div>
 </div>
-

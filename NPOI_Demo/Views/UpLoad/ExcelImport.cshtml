@@ -1,22 +1,25 @@
 ﻿<!--點選上傳檔案按鈕後POST到後端的Uploads的Action-->
 @using (Html.BeginForm("Uploads", "UpLoad", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-	<div class="uploads">
-		<input type="file" id="upload_file" name="file" />
-		<button type="submit" id="upload_button" class="btn btn-primary">上傳檔案</button>
-	</div>
+    <div class="uploads">
+        <input type="file" id="upload_file" name="file"/>
+        <button type="submit" id="upload_button" class="btn btn-primary">上傳檔案</button>
+    </div>
 }
 
 <div class="remote_file_path">
-	<label class="remote_file_path_label ">Remote File Path:</label>
-	<span class="form-control" id="remote_file_path">@ViewBag.path</span>
+    <label class="remote_file_path_label ">Remote File Path:</label>
+    <span class="form-control" id="remote_file_path">@ViewBag.path</span>
 </div>
 
 <div>
-	<label class="remote_file_path_label ">value in the first cell</label>
-	<span class="form-control" id="remote_file_path">@ViewBag.First_Cell_Value</span>
-	<br />
-	<label class="remote_file_path_label ">value in the first cell</label>
-	<span class="form-control" id="remote_file_path">@ViewBag.Second_Cell_Formula</span>
-	<span class="form-control" id="remote_file_path">@ViewBag.Second_Cell_Nermeric</span>
+    <label class="remote_file_path_label ">value in the first cell</label>
+    <span class="form-control" id="remote_file_path">@ViewBag.First_Cell_Value</span>
+    <br/>
+    <label class="remote_file_path_label ">value in the second cell</label>
+    <span class="form-control" id="remote_file_path">@ViewBag.Second_Cell_Nermeric</span>
+    <br>
+    <label class="remote_file_path_label ">formula in the second cell</label>
+    <span class="form-control" id="remote_file_path">@ViewBag.Second_Cell_Formula</span>
+    <br>
 </div>
