@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Text.Json;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using NPOI_Demo.Models;
 
 namespace NPOI_Demo.Controllers
 {
@@ -24,20 +28,34 @@ namespace NPOI_Demo.Controllers
 
 		private void ShowExcelValue()
 		{
-			//if (!ViewBag.path) return;
-
-			IWorkbook workBook = new XSSFWorkbook(ViewBag.path);
-			ISheet sheet = workBook.GetSheetAt(0);
+			var workBook = new XSSFWorkbook(ViewBag.path);
+			var sheet = workBook.GetSheetAt(0);
 
 			var formula = new XSSFFormulaEvaluator(workBook);
-			var first_Cell = sheet.GetRow(0).GetCell(0);
-			var second_Cell = sheet.GetRow(0).GetCell(1);
+			var lastRowNum = sheet.LastRowNum;
 
+			var missionAutos = new List<MissionAuto>();
 
-			ViewBag.First_Cell_Value = first_Cell.ToString();
-			ViewBag.Second_Cell_Formula = second_Cell.ToString();
-			formula.EvaluateFormulaCell(second_Cell);
-			ViewBag.Second_Cell_Nermeric = second_Cell.NumericCellValue.ToString();
+			for (var i = 1; i < lastRowNum; i++)
+			{
+				var cell = sheet.GetRow(i).GetCell(0);
+				missionAutos.Add(new MissionAuto()
+				{
+					Order = (int) cell.NumericCellValue,
+					Group = (int) sheet.GetRow(i).GetCell(1).NumericCellValue,
+					CriteriaType = sheet.GetRow(i).GetCell(2).StringCellValue,
+					CriteriaAmount = (int) sheet.GetRow(i).GetCell(3).NumericCellValue,
+					RewardType = sheet.GetRow(i).GetCell(4).StringCellValue,
+					RewardProvider = sheet.GetRow(i).GetCell(5) == null?"":sheet.GetRow(i).GetCell(5).StringCellValue,
+					RewardAmount = (int) sheet.GetRow(i).GetCell(6).NumericCellValue,
+					PeriodInHours = (int) sheet.GetRow(i).GetCell(7).NumericCellValue,
+				});
+			}
+
+			ViewBag.First_Cell_Value = JsonSerializer.Serialize(missionAutos);
+			// ViewBag.Second_Cell_Formula = secondCell.ToString();
+			// formula.EvaluateFormulaCell(secondCell);
+			// ViewBag.Second_Cell_Nermeric = secondCell.NumericCellValue.ToString(CultureInfo.CurrentCulture);
 
 		}
 
@@ -45,15 +63,15 @@ namespace NPOI_Demo.Controllers
 		{
 			if (Request.Files["file"].ContentLength > 0)
 			{
-				string extension = System.IO.Path.GetExtension(file.FileName);
-				string fileSavedPath = WebConfigurationManager.AppSettings["UploadPath"];
+				var extension = System.IO.Path.GetExtension(file.FileName);
+				var fileSavedPath = WebConfigurationManager.AppSettings["UploadPath"];
 
 				if (extension == ".xls" || extension == ".xlsx")
 				{
-					string newFileName = string.Concat(
+					var newFileName = string.Concat(
 					DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"),
 					Path.GetExtension(file.FileName).ToLower());
-					string fullFilePath = Path.Combine(Server.MapPath(fileSavedPath), newFileName);
+					var fullFilePath = Path.Combine(Server.MapPath(fileSavedPath), newFileName);
 
 					Request.Files["file"].SaveAs(fullFilePath);
 

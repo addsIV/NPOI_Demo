@@ -9,7 +9,7 @@ namespace NPOI_Demo.Controllers
     public class ExportController : Controller
     {
         [HttpPost]
-        public ActionResult Exports(int First_Cell_Value, int Second_Cell_Value, string Third_Cell_Formula)
+        public ActionResult Exports(int firstCellValue, int secondCellValue, string thirdCellFormula)
         {
             using (var exportData = new MemoryStream())
             {
@@ -18,17 +18,17 @@ namespace NPOI_Demo.Controllers
 
                 sheet.CreateRow(0);
                 sheet.GetRow(0).CreateCell(0).SetCellType(CellType.Numeric);
-                sheet.GetRow(0).CreateCell(0).SetCellValue(First_Cell_Value);
+                sheet.GetRow(0).CreateCell(0).SetCellValue(firstCellValue);
 
                 sheet.GetRow(0).CreateCell(1).SetCellType(CellType.Numeric);
-                sheet.GetRow(0).CreateCell(1).SetCellValue(Second_Cell_Value);
+                sheet.GetRow(0).CreateCell(1).SetCellValue(secondCellValue);
 
-                sheet.GetRow(0).CreateCell(2).SetCellFormula(Third_Cell_Formula);
+                sheet.GetRow(0).CreateCell(2).SetCellFormula(thirdCellFormula);
 
                 workbook.Write(exportData);
-                string saveAsFileName = string.Format("NPOI demo-{0:d}.xls", DateTime.Now).Replace("/", "-");
+                var saveAsFileName = $"NPOI demo-{DateTime.Now:d}.xls".Replace("/", "-");
 
-                byte[] bytes = exportData.ToArray();
+                var bytes = exportData.ToArray();
                 return File(bytes, "application/vnd.ms-excel", saveAsFileName);
             }
         }
